@@ -6,7 +6,7 @@
 
 This repo is for the absolutely shitty web interface code.
 * [Check out our end-user wiki, if you're a normal user.](https://github.com/Dopechain/insultcoin-wiki/wiki)
-* [We have a repository for logos and icons.](https://github.com/Dopechain/insultcoin-logos)
+* [We have a repository for logos and icons.](https://github.com/Dopechain/insultcoin-logo)
 * [Go take a peek at the smart contract code!](https://github.com/Dopechain/insultcoin-contracts)
 
 ## Disclaimer
