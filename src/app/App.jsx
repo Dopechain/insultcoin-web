@@ -1,4 +1,3 @@
-import { NotificationContainer } from "react-notifications"
 import UserProfileUI from "./UserProfileUI"
 import Navbar from "../common/Navbar"
 import Footer from "../common/Footer"
@@ -13,7 +12,6 @@ import SettingsModal from "./SettingsModal"
 import ConnectWallet from "../common/WalletButton"
 import SettingsButton from "./SettingsButton"
 import Preloader from "../common/Preloader"
-import InsultModal from "./InsultModal"
 
 window.onload = () => {
   Preloader(
@@ -105,10 +103,6 @@ export default class App extends React.Component {
           </header>
           <main className="bg-red-700 w-full flex-grow flex flex-col">
             <SettingsModal />
-
-            <div id="notificationContainer">
-              <NotificationContainer />
-            </div>
 
             <UserAddressForm
               value={this.state.addressValue}

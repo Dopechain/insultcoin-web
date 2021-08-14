@@ -20,22 +20,22 @@ class ShortcutsMenu extends React.Component {
           name="Paste"
         />
         <ShortcutsMenuItem
-          onClick={() => this.shortcut(AddressConfig.CAKE, "PancakeSwap Token")}
+          onClick={() => this.shortcut(AddressConfig.CAKE)}
           name="PancakeSwap Token"
         />
         <ShortcutsMenuItem
-          onClick={() => this.shortcut(AddressConfig.WBNB, "WBNB Token")}
+          onClick={() => this.shortcut(AddressConfig.WBNB)}
           name="WBNB Token"
         />
         <ShortcutsMenuItem
-          onClick={() => this.shortcut(AddressConfig.ZERO, "the 0x0 address")}
+          onClick={() => this.shortcut(AddressConfig.ZERO)}
           name="0x0 Address"
         />
         {this.context.provider !== ChainProviderSettings.defaultProvider && (
           <ShortcutsMenuItem
             onClick={async () => {
               let accs = await this.context.provider.getSigner().getAddress()
-              this.shortcut(accs, "your wallet's address")
+              this.shortcut(accs)
             }}
             name="Wallet Address"
           />
@@ -53,20 +53,12 @@ class ShortcutsMenu extends React.Component {
     })
   }
 
-  async shortcut(value, display) {
+  async shortcut(value) {
     let text
     if (value == "paste") {
       text = await navigator.clipboard.readText()
-      NotificationManager.success(
-        "You have successfully pasted the address from your clipboard!",
-        "Successfully set address"
-      )
     } else {
       text = value
-      NotificationManager.success(
-        `You have successfully set the address to ${display}!`,
-        "Successfully set address"
-      )
     }
     this.change(text || this.props.value)
   }
