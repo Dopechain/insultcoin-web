@@ -7,6 +7,7 @@ module.exports = {
     "./public/**/*.css",
     "./src/**/*.jsx",
     "./src/**/*.js",
+    "./src/**/*.ts",
   ],
   //mode: "jit",
   theme: {},

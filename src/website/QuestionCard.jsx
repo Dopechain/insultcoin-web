@@ -8,7 +8,7 @@ export default class QuestionCard extends React.Component {
         className={
           this.props.className
             ? this.props.className
-            : "justify-self-auto animate__animated flex flex-col bg-red-600 py-4 px-6 rounded-xl items-center text-xl font-semibold " +
+            : " animate__animated flex flex-col bg-red-600 py-4 px-6 rounded-xl text-xl font-semibold " +
               (this.props.customTransitionClass
                 ? this.props.customTransitionClass
                 : "animate__fadeIn")
