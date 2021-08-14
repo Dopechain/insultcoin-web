@@ -1,0 +1,17 @@
+@import "csshake";
+@import "animate.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*.truncate1l {
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}*/
+
+svg {
+  display: inline;
+}
