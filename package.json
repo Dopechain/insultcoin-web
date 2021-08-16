@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run serve",
-    "build": "SET NODE_ENV=production && snowpack build --polyfill-node",
+    "build": "NODE_ENV=production && snowpack build --polyfill-node",
     "serve": "snowpack dev --polyfill-node"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@dicebear/avatars": "^4.6.4",
     "@dicebear/avatars-identicon-sprites": "^4.6.4",
