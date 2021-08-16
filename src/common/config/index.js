@@ -11,10 +11,20 @@ export default {
       },
       explorer: "about:blank",
     },
+    97: {
+      short: "BSC Testnet",
+      full: "Binance Smart Chain Testnet",
+      deploymentContract: "0xD1C8A4194d525AD404a3195D3B6A1a2C729934b3",
+      rpc: "https://data-seed-prebsc-1-s2.binance.org:8545/",
+      currency: {
+        symbol: "BNB",
+      },
+      explorer: "https://testnet.bscscan.com",
+    },
     56: {
       short: "BSC",
       full: "Binance Smart Chain",
-      deploymentContract: "0x5fbdb2315678afecb367f032d93f642f64180aa3",
+      deploymentContract: "0xD1C8A4194d525AD404a3195D3B6A1a2C729934b3",
       rpc: "https://bsc-dataseed.binance.org/",
       currency: {
         symbol: "BNB",

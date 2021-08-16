@@ -5,9 +5,10 @@
 ### Other InsultCoin Repos
 
 This repo is for the absolutely shitty web interface code.
-* [Check out our end-user wiki, if you're a normal user.](https://github.com/Dopechain/insultcoin-wiki/wiki)
-* [We have a repository for logos and icons.](https://github.com/Dopechain/insultcoin-logo)
-* [Go take a peek at the smart contract code!](https://github.com/Dopechain/insultcoin-contracts)
+
+- [Check out our end-user wiki, if you're a normal user.](https://github.com/Dopechain/insultcoin-wiki/wiki)
+- [We have a repository for logos and icons.](https://github.com/Dopechain/insultcoin-logo)
+- [Go take a peek at the smart contract code!](https://github.com/Dopechain/insultcoin-contracts)
 
 ## Disclaimer
 
@@ -16,6 +17,12 @@ This project has not been audited as I don't have the budget to. Just don't put 
 ## Testing
 
 You can run your own local copy of the web interface by cloning this repo (`git clone https://github.com/Dopechain/insultcoin-web.git`), installing dependencies (`npm i`) and running the command `npm test`.
+
+## Branches
+
+The "dev" branch is just for development and is not guaranteed to work as well.
+
+The "prod" branch is actually published to production.
 
 ## License
 

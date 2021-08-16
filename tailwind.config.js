@@ -7,6 +7,7 @@ module.exports = {
     "./public/**/*.css",
     "./src/**/*.jsx",
     "./src/**/*.js",
+    "./src/**/*.ts",
   ],
   //mode: "jit",
   theme: {},
@@ -22,7 +23,6 @@ module.exports = {
   plugins: [
     require("tailwind-scrollbar"),
     require("tailwind-scrollbar-hide"),
-    require("daisyui"),
     require("@tailwindcss/custom-forms"),
   ],
 }

@@ -3,7 +3,7 @@ import Footer from "../common/Footer"
 import React from "react"
 import ReactDOM from "react-dom"
 import Preloader from "../common/Preloader"
-import { FaCoins, FaRobot } from "react-icons/fa"
+import { FaCoins, FaGithub, FaRegQuestionCircle, FaRobot } from "react-icons/fa"
 import LinkButton from "./LinkButton"
 
 import { Typewriter } from "react-typewriting-effect"
@@ -71,7 +71,7 @@ export default class WebsiteApp extends React.Component {
                     className="inline-block text-sm underline text-yellow-400"
                     onClick={() => this.stopSkipAnimation()}
                   >
-                    Don't skip in the future
+                    Don&quot;t skip in the future
                   </button>
                 )}
                 {this.state.hideAnimSkipText && (
@@ -141,10 +141,28 @@ export default class WebsiteApp extends React.Component {
                       </>
                     }
                   />
+                  <LinkButton
+                    href="https://github.com/Dopechain"
+                    className="text-blue-300"
+                    text={
+                      <>
+                        <FaGithub /> <p className="inline">GitHub</p>
+                      </>
+                    }
+                  />
+                  <LinkButton
+                    href="https://github.com/Dopechain/insultcoin-wiki/wiki"
+                    className="text-white"
+                    text={
+                      <>
+                        <FaRegQuestionCircle /> <p className="inline">Help</p>
+                      </>
+                    }
+                  />
                 </div>
               </div>
 
-              <div className="grid grid-flow-col justify-center sm:grid-flow-row grid-rows-3 sm:grid-rows-none sm:grid-cols-2 md:grid-cols-3 lg:auto-cols-auto justify-items-stretch items-stretch gap-2 mx-8">
+              <div className="grid grid-flow-col sm:grid-flow-row grid-cols-3 gap-2 mx-8">
                 <QuestionCard
                   customTransitionClass="animate__fadeInDown"
                   title="What?"

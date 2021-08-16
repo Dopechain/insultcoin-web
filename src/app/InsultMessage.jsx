@@ -5,11 +5,10 @@ import { formatLevel } from "../common/formatLevel"
 import truncate from "./truncate"
 import PropTypes from "prop-types"
 import { DateTime } from "luxon"
-import SettingsContext from "./SettingsContext"
 import { ethers } from "ethers"
 
 export default function Message(props) {
-  let isoTimestamp = Math.floor(Number(props.timestamp) / 1000)
+  let isoTimestamp = Math.floor(props.timestamp)
   let date = DateTime.fromSeconds(isoTimestamp)
     .setZone("local")
     .toLocaleString(DateTime.DATETIME_SHORT)
@@ -57,9 +56,9 @@ export default function Message(props) {
           //id={Math.random()}
           lines={3}
           ellipsis="..."
-          moreText="Expand"
-          lessText="Collapse"
-          className="text-gray-500 font-medium break-all"
+          moreText="Read more"
+          lessText="Read less"
+          className="text-gray-500 font-medium break-words"
           innerElement="p"
         />
         <div className="flex flex-row gap-x-3">
