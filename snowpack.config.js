@@ -5,7 +5,7 @@
 /** @type {import("snowpack").SnowpackUserConfig } */
 module.exports = {
   optimize: {
-    bundle: true,
+    bundle: false,
     minify: true,
     target: "es2018",
   },
