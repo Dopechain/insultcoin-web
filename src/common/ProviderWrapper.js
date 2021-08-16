@@ -1,9 +1,9 @@
 import config from "./config"
 import { ethers } from "ethers"
-import TokenABI from "./abi/Token.json"
-import DeploymentABI from "./abi/Deployment.json"
-import ICOABI from "./abi/ICO.json"
-import InsultingABI from "./abi/Insulting.json"
+import TokenABI from "../common/abi/Token.json"
+import DeploymentABI from "../common/abi/Deployment.json"
+import ICOABI from "../common/abi/ICO.json"
+import InsultingABI from "../common/abi/Insulting.json"
 import chains from "eth-chains"
 import { getAddress } from "ethers/lib/utils"
 
