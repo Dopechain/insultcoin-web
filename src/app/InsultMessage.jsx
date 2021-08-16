@@ -5,7 +5,6 @@ import { formatLevel } from "../common/formatLevel"
 import truncate from "./truncate"
 import PropTypes from "prop-types"
 import { DateTime } from "luxon"
-import SettingsContext from "./SettingsContext"
 import { ethers } from "ethers"
 
 export default function Message(props) {
