@@ -12,6 +12,7 @@ import SettingsModal from "./SettingsModal"
 import ConnectWallet from "../common/WalletButton"
 import SettingsButton from "./SettingsButton"
 import Preloader from "../common/Preloader"
+import NotificationContainer from "react-notifications/lib/NotificationContainer"
 
 window.onload = () => {
   Preloader(
@@ -102,6 +103,7 @@ export default class App extends React.Component {
             </Navbar>
           </header>
           <main className="bg-red-700 w-full flex-grow flex flex-col">
+            <NotificationContainer />
             <SettingsModal />
 
             <UserAddressForm

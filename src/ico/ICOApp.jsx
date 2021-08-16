@@ -1,4 +1,3 @@
-import { NotificationContainer } from "react-notifications"
 import Navbar from "../common/Navbar"
 import Footer from "../common/Footer"
 import React from "react"
@@ -103,9 +102,6 @@ export default class ICOApp extends React.Component {
             <Navbar name="InsultCoin ICO"></Navbar>
           </header>
           <main className="bg-red-700 w-full flex-grow flex flex-col">
-            <div id="notificationContainer">
-              <NotificationContainer />
-            </div>
             <div className="bg-red-800 md:rounded-xl flex-grow-0 mb-2 p-2 md:mx-5 mt-5">
               <div className="justify-center content-center items-center flex flex-col text-md text-white">
                 <ErrorMessage
@@ -134,9 +130,6 @@ export default class ICOApp extends React.Component {
             </Navbar>
           </header>
           <main className="bg-red-700 w-full flex-grow flex flex-col">
-            <div id="notificationContainer">
-              <NotificationContainer />
-            </div>
             <div className="bg-red-800 md:rounded-xl flex-grow-0 mb-2 p-2 md:mx-5 mt-5">
               <div className="justify-center content-center items-center flex flex-col text-md text-white">
                 <h1 className="text-center text-3xl text-white font-semibold">

@@ -1,6 +1,5 @@
 import PropTypes from "prop-types"
 import React from "react"
-import { NotificationManager } from "react-notifications"
 import ShortcutsMenuItem from "./ShortcutMenuItem"
 import AddressConfig from "./ShortcutAddressConfig"
 import ChainProviderContext, {
