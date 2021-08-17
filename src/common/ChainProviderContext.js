@@ -3,9 +3,9 @@ import { ethers } from "ethers"
 
 export let ChainProviderSettings = {
   defaultProvider: new ethers.providers.JsonRpcProvider(
-    "http://localhost:8545",
+    "https://bsc-dataseed.binance.org/",
     {
-      chainId: 31337,
+      chainId: 56,
     }
   ),
 }
