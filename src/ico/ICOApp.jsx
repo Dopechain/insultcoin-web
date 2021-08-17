@@ -144,16 +144,10 @@ export default class ICOApp extends React.Component {
                 <br className="my-3" />
                 <h2 className="text-center text-2xl text-white">"Features"</h2>
                 <hr className="block border-solid border w-5/6 justify-center my-2 border-white" />
-                <a
-                  href="/icofeatures"
-                  className="text-white hover:text-red-300 underline mb-2"
-                >
-                  See full list of idiotic "features" here
-                </a>
                 <FeatureList>
                   <FeatureListItem
                     name='"The future" of insulting'
-                    desc="This token is just.. absolutely stupid, literally, go up to the guy and say the insult to their face! Or use Face..book! Just whatever, this is stupid."
+                    desc="This token is just.. absolutely stupid, literally, go up to the guy and say the insult to their face! Or use Facebook or some app! Just whatever, this is stupid."
                   />
                   <FeatureListItem
                     name="Industry-leading crypto"
