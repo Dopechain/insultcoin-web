@@ -7,7 +7,6 @@ import InsultingABI from "../common/abi/Insulting.json"
 import chains from "eth-chains"
 import { getAddress } from "ethers/lib/utils"
 
-let mapOfProviders = new Map()
 export default class ProviderWrapper {
   constructor(provider, network) {
     if (!this.isSupportedNetwork(network)) {
@@ -29,18 +28,6 @@ export default class ProviderWrapper {
       )
     }
 
-    if (!mapOfProviders.has(provider)) {
-      provider.on("network", (newNetwork, oldNetwork) => {
-        // When a Provider makes its initial connection, it emits a "network"
-        // event with a null oldNetwork along with the newNetwork. So, if the
-        // oldNetwork exists, it represents a changing network
-        if (oldNetwork) {
-          this.network = newNetwork
-          console.log("Changing networks to " + newNetwork)
-        }
-      })
-      mapOfProviders.set(provider, true)
-    }
     this.provider = provider
     this.network = network
   }

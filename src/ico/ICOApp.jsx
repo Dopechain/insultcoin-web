@@ -96,21 +96,23 @@ export default class ICOApp extends React.Component {
   }
 
   async componentDidUpdate(prevProps, prevState) {
-    if (
-      this.state.provider.provider.constructor.name == "Web3Provider" &&
-      this.state.provider.provider !== prevState.provider.provider
-    ) {
-      let prov = this.state.provider.provider
-
+    let prov = this.state.provider.provider
+    if (prov !== prevState.provider.provider) {
       let chainId = (await prov.getNetwork()).chainId
       let wprov = new ProviderWrapper(prov, chainId)
 
       let tokenAddr = (await wprov.getContracts()).token.address
       console.log("address of token: " + tokenAddr)
       this.setProvider(prov)
-      this.setState({
-        address: await prov.getSigner().getAddress(),
-      })
+      if (wprov.canSendTransactions()) {
+        this.setState({
+          address: await prov.getSigner().getAddress(),
+        })
+      } else {
+        this.setState({
+          address: undefined,
+        })
+      }
     }
   }
 
