@@ -6,6 +6,7 @@ import Preloader from "../common/Preloader"
 import ChainProviderContext, {
   ChainProviderSettings,
 } from "../common/ChainProviderContext"
+import PleaseConnectWalletUI from "./PleaseConnectWalletUI"
 import BuyUI from "./BuyUI"
 import WalletButton from "../common/WalletButton"
 import FeatureList from "./FeatureList"
@@ -94,6 +95,25 @@ export default class ICOApp extends React.Component {
     }
   }
 
+  async componentDidUpdate(prevProps, prevState) {
+    if (
+      this.state.provider.provider.constructor.name == "Web3Provider" &&
+      this.state.provider.provider !== prevState.provider.provider
+    ) {
+      let prov = this.state.provider.provider
+
+      let chainId = (await prov.getNetwork()).chainId
+      let wprov = new ProviderWrapper(prov, chainId)
+
+      let tokenAddr = (await wprov.getContracts()).token.address
+      console.log("address of token: " + tokenAddr)
+      this.setProvider(prov)
+      this.setState({
+        address: await prov.getSigner().getAddress(),
+      })
+    }
+  }
+
   render() {
     if (this.state.hasError) {
       return (
@@ -144,16 +164,10 @@ export default class ICOApp extends React.Component {
                 <br className="my-3" />
                 <h2 className="text-center text-2xl text-white">"Features"</h2>
                 <hr className="block border-solid border w-5/6 justify-center my-2 border-white" />
-                <a
-                  href="/icofeatures"
-                  className="text-white hover:text-red-300 underline mb-2"
-                >
-                  See full list of idiotic "features" here
-                </a>
                 <FeatureList>
                   <FeatureListItem
                     name='"The future" of insulting'
-                    desc="This token is just.. absolutely stupid, literally, go up to the guy and say the insult to their face! Or use Face..book! Just whatever, this is stupid."
+                    desc="This token is just.. absolutely stupid, literally, go up to the guy and say the insult to their face! Or use Facebook or some app! Just whatever, this is stupid."
                   />
                   <FeatureListItem
                     name="Industry-leading crypto"
@@ -180,6 +194,8 @@ export default class ICOApp extends React.Component {
                 address={this.state.address}
               />
             )}
+            {this.state.provider.provider.constructor.name !==
+              "Web3Provider" && <PleaseConnectWalletUI />}
           </main>
           <Footer />
         </div>

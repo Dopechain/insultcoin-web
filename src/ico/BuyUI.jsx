@@ -52,7 +52,7 @@ export default class BuyUI extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      loading: false,
+      loading: true,
       error: false,
       sentInsults: [],
       recvInsults: [],
@@ -63,10 +63,44 @@ export default class BuyUI extends React.Component {
   }
 
   async componentDidMount() {
-    this.update({})
+    this.setState({
+      loading: true,
+      error: false,
+    })
+
     let net = await this.props.provider.getNetwork()
 
     let prov = new ProviderWrapper(this.props.provider, net.chainId)
+
+    let bnbData = await fetch(
+      "https://api.pancakeswap.info/api/v2/tokens/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"
+    )
+
+    let BNBjson = await bnbData.json()
+
+    let icoRate = await prov.getICORate(this.props.address)
+
+    this.setState({
+      bnbToUSD: Math.round(Number(BNBjson.data.price)),
+      icoPrice: ethers.BigNumber.from("1000000000000000000").div(
+        await prov.getICORate(this.props.address)
+      ),
+      icoRate,
+      DisplayingErrorMessagesSchema: Yup.object().shape({
+        amountToBuy: Yup.number("Not a number")
+          .required("Required")
+          .positive("You can't get negative tokens!")
+          .max(
+            Number(
+              ethers.utils.formatEther(
+                await prov.getNativeBalance(this.props.address)
+              )
+            ) * icoRate,
+            "You don't have that much!"
+          ),
+      }),
+      loading: false,
+    })
 
     let contracts = await prov.getContracts()
 
@@ -75,63 +109,24 @@ export default class BuyUI extends React.Component {
         icoRemaining: remainingBal,
       })
     })
+    this.update({}, prov)
   }
 
   async componentDidUpdate(prevProps) {
-    this.update(prevProps)
+    let net = await this.props.provider.getNetwork()
+
+    let prov = new ProviderWrapper(this.props.provider, net.chainId)
+    this.update(prevProps, prov)
   }
 
-  async update(prevProps) {
+  async update(prevProps, prov) {
     // Only run this IF the current props are not the same as previous props
     if (this.props !== prevProps) {
       try {
         this.setState({
-          loading: true,
-          error: false,
+          icoRemaining: await prov.getICOremaining(this.props.address),
+          balance: await prov.getNativeBalance(this.props.address),
         })
-
-        // WBNB information
-        // https://api.pancakeswap.info/api/v2/tokens/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c
-        let net = await this.props.provider.getNetwork()
-
-        let prov = new ProviderWrapper(this.props.provider, net.chainId)
-
-        let bnbData = await fetch(
-          "https://api.pancakeswap.info/api/v2/tokens/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"
-        )
-
-        let BNBjson = await bnbData.json()
-
-        this.setState(
-          {
-            icoPrice: ethers.BigNumber.from("1000000000000000000").div(
-              await prov.getICORate(this.props.address)
-            ),
-            icoRate: await prov.getICORate(this.props.address),
-            icoRemaining: await prov.getICOremaining(this.props.address),
-            balance: await prov.getNativeBalance(this.props.address),
-            bnbToUSD: Math.round(Number(BNBjson.data.price)),
-          },
-          async () => {
-            let DisplayingErrorMessagesSchema = Yup.object().shape({
-              amountToBuy: Yup.number("Not a number")
-                .required("Required")
-                .positive("You can't get negative tokens!")
-                .max(
-                  Number(
-                    ethers.utils.formatEther(
-                      await prov.getNativeBalance(this.props.address)
-                    )
-                  ) * (await prov.getICORate()),
-                  "You don't have that much!"
-                ),
-            })
-            this.setState({
-              DisplayingErrorMessagesSchema,
-              loading: false,
-            })
-          }
-        )
       } catch (e) {
         console.error(e)
         this.setState({
