@@ -6,6 +6,7 @@ import Preloader from "../common/Preloader"
 import ChainProviderContext, {
   ChainProviderSettings,
 } from "../common/ChainProviderContext"
+import PleaseConnectWalletUI from "./PleaseConnectWalletUI"
 import BuyUI from "./BuyUI"
 import WalletButton from "../common/WalletButton"
 import FeatureList from "./FeatureList"
@@ -81,6 +82,25 @@ export default class ICOApp extends React.Component {
 
     if (web3Modal.cachedProvider) {
       let prov = new ethers.providers.Web3Provider(await web3Modal.connect())
+
+      let chainId = (await prov.getNetwork()).chainId
+      let wprov = new ProviderWrapper(prov, chainId)
+
+      let tokenAddr = (await wprov.getContracts()).token.address
+      console.log("address of token: " + tokenAddr)
+      this.setProvider(prov)
+      this.setState({
+        address: await prov.getSigner().getAddress(),
+      })
+    }
+  }
+
+  async componentDidUpdate(prevProps, prevState) {
+    if (
+      this.state.provider.provider.constructor.name == "Web3Provider" &&
+      this.state.provider.provider !== prevState.provider.provider
+    ) {
+      let prov = this.state.provider.provider
 
       let chainId = (await prov.getNetwork()).chainId
       let wprov = new ProviderWrapper(prov, chainId)
@@ -174,6 +194,8 @@ export default class ICOApp extends React.Component {
                 address={this.state.address}
               />
             )}
+            {this.state.provider.provider.constructor.name !==
+              "Web3Provider" && <PleaseConnectWalletUI />}
           </main>
           <Footer />
         </div>

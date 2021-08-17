@@ -73,7 +73,7 @@ export default class ICOStats extends React.Component {
 
   async update(prevProps) {
     // Only run this IF the current props are not the same as previous props
-    if (this.props !== prevProps) {
+    if (this.props.provider !== prevProps.provider) {
       try {
         this.setState({
           loading: true,
