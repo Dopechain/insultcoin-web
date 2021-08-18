@@ -56,10 +56,6 @@ export default class WalletModal extends React.Component {
 
       let p = await web3Modal.connect()
 
-      this.setState({
-        disabled: false,
-      })
-
       const ethersProvider = new ethers.providers.Web3Provider(p)
 
       if (ctx.connected == false) {
@@ -70,6 +66,15 @@ export default class WalletModal extends React.Component {
         ctx.setProvider(ChainProviderSettings.defaultProvider, false)
         console.log(`Unset context`)
       }
+
+      // wait
+      setTimeout(
+        () =>
+          this.setState({
+            disabled: false,
+          }),
+        2000
+      )
     } catch (e) {
       console.log(e)
     }

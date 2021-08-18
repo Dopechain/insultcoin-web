@@ -79,7 +79,7 @@ export default class ICOApp extends React.Component {
     })
   }
 
-  async componentDidMount() {
+  async UNSAFE_componentWillMount() {
     this.setState(
       {
         loading: true,
@@ -103,7 +103,7 @@ export default class ICOApp extends React.Component {
           console.log("address of token: " + tokenAddr)
           this.setProvider(prov, true)
           this.setState({
-            address: await prov.getSigner().getAddress(),
+            address: await wprov.getAddress(),
           })
         }
         this.setState({
@@ -116,7 +116,6 @@ export default class ICOApp extends React.Component {
   async componentDidUpdate(prevProps, prevState) {
     let prov = this.state.provider.provider
     if (this.state.update !== prevState.update) {
-      debugger
       let chainId = (await prov.getNetwork()).chainId
       let wprov = new ProviderWrapper(prov, chainId)
 
