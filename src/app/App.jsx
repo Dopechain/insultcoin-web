@@ -31,13 +31,14 @@ export default class App extends React.Component {
       provider: {
         setProvider: this.setProvider.bind(this),
         provider: ChainProviderSettings.defaultProvider,
+        connected: false,
       },
       addressValue: "",
       viewing: false,
-      refreshValue: 1,
+      refreshValue: 1, // ultra omega super HACKY DO NOT
     }
 
-    this.handleConnectWallet = this.handleConnectWallet.bind(this)
+    this.setProvider = this.setProvider.bind(this)
     this.onFormSubmit = this.onFormSubmit.bind(this)
     this.onFormChange = this.onFormChange.bind(this)
     this.handleRefresh = this.handleRefresh.bind(this)
@@ -54,12 +55,13 @@ export default class App extends React.Component {
     )
   }
 
-  setProvider(provider) {
+  setProvider(provider, connected) {
     console.log("provider set to " + provider)
     this.setState({
       provider: {
         setProvider: this.setProvider.bind(this),
         provider,
+        connected,
       },
     })
   }
@@ -82,12 +84,6 @@ export default class App extends React.Component {
     })
   }
 
-  handleConnectWallet(value) {
-    this.setState({
-      provider: value,
-    })
-  }
-
   render() {
     return (
       <ChainProviderContext.Provider value={this.state.provider}>
@@ -97,7 +93,6 @@ export default class App extends React.Component {
               <ConnectWallet
                 // This is the wallet button.
                 className="inline-block bg-red-800 text-sm text-center lg:flex-grow-0 w-full sm:w-48 px-4 py-2 shadow-inner leading-none border rounded text-white border-red-300 hover:text-gray-200 hover:bg-red-600 mt-0 order-3 sm:order-last"
-                onClick={this.handleConnectWallet}
               ></ConnectWallet>
               <SettingsButton />
             </Navbar>
