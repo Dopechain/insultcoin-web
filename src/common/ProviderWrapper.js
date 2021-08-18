@@ -5,9 +5,8 @@ import DeploymentABI from "../common/abi/Deployment.json"
 import ICOABI from "../common/abi/ICO.json"
 import InsultingABI from "../common/abi/Insulting.json"
 import chains from "eth-chains"
-import { getAddress } from "ethers/lib/utils"
+import { Web3Provider } from "@ethersproject/providers"
 
-let mapOfProviders = new Map()
 export default class ProviderWrapper {
   constructor(provider, network) {
     if (!this.isSupportedNetwork(network)) {
@@ -29,18 +28,6 @@ export default class ProviderWrapper {
       )
     }
 
-    if (!mapOfProviders.has(provider)) {
-      provider.on("network", (newNetwork, oldNetwork) => {
-        // When a Provider makes its initial connection, it emits a "network"
-        // event with a null oldNetwork along with the newNetwork. So, if the
-        // oldNetwork exists, it represents a changing network
-        if (oldNetwork) {
-          this.network = newNetwork
-          console.log("Changing networks to " + newNetwork)
-        }
-      })
-      mapOfProviders.set(provider, true)
-    }
     this.provider = provider
     this.network = network
   }
@@ -57,13 +44,7 @@ export default class ProviderWrapper {
   }
 
   canSendTransactions(provider = this.provider) {
-    if (provider.constructor.name == "Web3Provider") {
-      return true
-    } else if (provider.constructor.name == "JsonRpcProvider") {
-      return false
-    } else {
-      return false
-    }
+    return provider instanceof Web3Provider
   }
 
   async getContracts() {

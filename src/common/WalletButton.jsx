@@ -3,6 +3,7 @@ import "reactjs-popup/dist/index.css"
 import { FaWallet } from "react-icons/fa"
 import PropTypes from "prop-types"
 import { ethers } from "ethers"
+import { JsonRpcProvider } from "@ethersproject/providers"
 
 import Web3Modal from "web3modal"
 import ChainProviderContext, {
@@ -55,20 +56,25 @@ export default class WalletModal extends React.Component {
 
       let p = await web3Modal.connect()
 
-      this.setState({
-        disabled: false,
-      })
-
       const ethersProvider = new ethers.providers.Web3Provider(p)
 
-      if (ctx.provider == ChainProviderSettings.defaultProvider) {
-        ctx.setProvider(ethersProvider)
+      if (ctx.connected == false) {
+        ctx.setProvider(ethersProvider, true)
         console.log(`Context: set provider`)
       } else {
         await web3Modal.clearCachedProvider()
-        ctx.setProvider(ChainProviderSettings.defaultProvider)
+        ctx.setProvider(ChainProviderSettings.defaultProvider, false)
         console.log(`Unset context`)
       }
+
+      // wait
+      setTimeout(
+        () =>
+          this.setState({
+            disabled: false,
+          }),
+        2000
+      )
     } catch (e) {
       console.log(e)
     }

@@ -41,7 +41,7 @@ export default class ICOStats extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      loading: false,
+      loading: true,
       error: false,
       sentInsults: [],
       recvInsults: [],
@@ -64,16 +64,16 @@ export default class ICOStats extends React.Component {
       })
     })
 
-    this.update({})
+    this.update({ address: ".test" }, {})
   }
 
-  async componentDidUpdate(prevProps) {
-    this.update(prevProps)
+  async componentDidUpdate(prevProps, prevState) {
+    this.update(prevProps, prevState)
   }
 
-  async update(prevProps) {
+  async update(prevProps, prevState) {
     // Only run this IF the current props are not the same as previous props
-    if (this.props.provider !== prevProps.provider) {
+    if (this.props.address !== prevProps.address) {
       try {
         this.setState({
           loading: true,
@@ -85,10 +85,12 @@ export default class ICOStats extends React.Component {
 
         this.setState({
           icoPrice: ethers.BigNumber.from("1000000000000000000").div(
-            await prov.getICORate(this.props.address)
+            await prov.getICORate()
           ),
-          icoRemaining: await prov.getICOremaining(this.props.address),
-          balance: await prov.getBalance(this.props.address),
+          icoRemaining: await prov.getICOremaining(),
+          balance: this.props.address
+            ? await prov.getBalance(this.props.address)
+            : ethers.BigNumber.from("0"),
         })
 
         this.setState({
@@ -159,24 +161,26 @@ export default class ICOStats extends React.Component {
                 </p>
               )}
             </ICOStatCard>
-            <ICOStatCard
-              image={getBalanceLogo(
-                Number(ethers.utils.formatUnits(this.state.balance, "ether"))
-              )}
-              name="Your Balance"
-            >
-              <p>
-                You have{" "}
-                <b className="text-red-800">
-                  {ethers.utils.commify(
-                    ethers.utils.formatEther(this.state.balance)
-                  )}{" "}
-                  INSULT
-                </b>{" "}
-                in your wallet.{" "}
-                {getBalanceText(ethers.utils.formatEther(this.state.balance))}
-              </p>
-            </ICOStatCard>
+            {this.props.address && (
+              <ICOStatCard
+                image={getBalanceLogo(
+                  Number(ethers.utils.formatUnits(this.state.balance, "ether"))
+                )}
+                name="Your Balance"
+              >
+                <p>
+                  You have{" "}
+                  <b className="text-red-800">
+                    {ethers.utils.commify(
+                      ethers.utils.formatEther(this.state.balance)
+                    )}{" "}
+                    INSULT
+                  </b>{" "}
+                  in your wallet.{" "}
+                  {getBalanceText(ethers.utils.formatEther(this.state.balance))}
+                </p>
+              </ICOStatCard>
+            )}
           </div>
         )}
       </div>

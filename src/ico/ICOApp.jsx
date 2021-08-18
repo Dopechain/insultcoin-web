@@ -30,9 +30,12 @@ export default class ICOApp extends React.Component {
       provider: {
         setProvider: this.setProvider.bind(this),
         provider: ChainProviderSettings.defaultProvider,
+        connected: false,
       },
-      addressValue: "",
+      loading: false,
+      address: undefined,
       viewing: false,
+      update: 0, // EXTREMELY HACKY BUT IT WORKS DONT JUDGE ME IM A NOOB
     }
 
     this.handleConnectWallet = this.handleConnectWallet.bind(this)
@@ -45,12 +48,15 @@ export default class ICOApp extends React.Component {
     return { hasError: true, error }
   }
 
-  setProvider(provider) {
+  setProvider(provider, connected) {
+    console.log("set provider brr")
     this.setState({
       provider: {
         setProvider: this.setProvider.bind(this),
         provider,
+        connected,
       },
+      update: Math.random(),
     })
   }
 
@@ -73,44 +79,68 @@ export default class ICOApp extends React.Component {
     })
   }
 
-  async componentDidMount() {
-    let web3Modal = new Web3Modal({
-      network: "mainnet", // optional
-      cacheProvider: true, // optional
-      providerOptions: {}, // required
-    })
+  async UNSAFE_componentWillMount() {
+    this.setState(
+      {
+        loading: true,
+      },
+      async () => {
+        let web3Modal = new Web3Modal({
+          network: "mainnet", // optional
+          cacheProvider: true, // optional
+          providerOptions: {}, // required
+        })
 
-    if (web3Modal.cachedProvider) {
-      let prov = new ethers.providers.Web3Provider(await web3Modal.connect())
+        if (web3Modal.cachedProvider) {
+          let prov = new ethers.providers.Web3Provider(
+            await web3Modal.connect()
+          )
 
-      let chainId = (await prov.getNetwork()).chainId
-      let wprov = new ProviderWrapper(prov, chainId)
+          let chainId = (await prov.getNetwork()).chainId
+          let wprov = new ProviderWrapper(prov, chainId)
 
-      let tokenAddr = (await wprov.getContracts()).token.address
-      console.log("address of token: " + tokenAddr)
-      this.setProvider(prov)
-      this.setState({
-        address: await prov.getSigner().getAddress(),
-      })
-    }
+          let tokenAddr = (await wprov.getContracts()).token.address
+          console.log("address of token: " + tokenAddr)
+          this.setProvider(prov, true)
+          this.setState({
+            address: await wprov.getAddress(),
+          })
+        }
+        this.setState({
+          loading: false,
+        })
+      }
+    )
   }
 
   async componentDidUpdate(prevProps, prevState) {
-    if (
-      this.state.provider.provider.constructor.name == "Web3Provider" &&
-      this.state.provider.provider !== prevState.provider.provider
-    ) {
-      let prov = this.state.provider.provider
-
+    let prov = this.state.provider.provider
+    if (this.state.update !== prevState.update) {
       let chainId = (await prov.getNetwork()).chainId
       let wprov = new ProviderWrapper(prov, chainId)
 
       let tokenAddr = (await wprov.getContracts()).token.address
       console.log("address of token: " + tokenAddr)
-      this.setProvider(prov)
-      this.setState({
-        address: await prov.getSigner().getAddress(),
-      })
+
+      if (wprov.canSendTransactions()) {
+        this.setState(
+          {
+            address: await wprov.getAddress(),
+          },
+          () => {
+            console.log("can send txs, yay")
+          }
+        )
+      } else {
+        this.setState(
+          {
+            address: undefined,
+          },
+          () => {
+            console.log("can't send txs, ono")
+          }
+        )
+      }
     }
   }
 
@@ -180,22 +210,23 @@ export default class ICOApp extends React.Component {
                 </FeatureList>
               </div>
             </div>
-
-            {this.state.provider.provider && (
-              <ICOStats
-                provider={this.state.provider.provider}
-                address={this.state.address}
-              />
+            {this.state.loading == false && (
+              <>
+                {this.state.provider.provider && (
+                  <ICOStats
+                    provider={this.state.provider.provider}
+                    address={this.state.address}
+                  />
+                )}
+                {this.state.address !== undefined && (
+                  <BuyUI
+                    provider={this.state.provider.provider}
+                    address={this.state.address}
+                  />
+                )}
+                {this.state.address == undefined && <PleaseConnectWalletUI />}
+              </>
             )}
-            {this.state.provider.provider.constructor.name ==
-              "Web3Provider" && (
-              <BuyUI
-                provider={this.state.provider.provider}
-                address={this.state.address}
-              />
-            )}
-            {this.state.provider.provider.constructor.name !==
-              "Web3Provider" && <PleaseConnectWalletUI />}
           </main>
           <Footer />
         </div>

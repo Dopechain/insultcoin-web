@@ -80,25 +80,15 @@ export default class BuyUI extends React.Component {
 
     let icoRate = await prov.getICORate(this.props.address)
 
+    let bal = this.props.address
+      ? await prov.getNativeBalance(this.props.address)
+      : 0
     this.setState({
       bnbToUSD: Math.round(Number(BNBjson.data.price)),
       icoPrice: ethers.BigNumber.from("1000000000000000000").div(
         await prov.getICORate(this.props.address)
       ),
       icoRate,
-      DisplayingErrorMessagesSchema: Yup.object().shape({
-        amountToBuy: Yup.number("Not a number")
-          .required("Required")
-          .positive("You can't get negative tokens!")
-          .max(
-            Number(
-              ethers.utils.formatEther(
-                await prov.getNativeBalance(this.props.address)
-              )
-            ) * icoRate,
-            "You don't have that much!"
-          ),
-      }),
       loading: false,
     })
 
@@ -121,11 +111,23 @@ export default class BuyUI extends React.Component {
 
   async update(prevProps, prov) {
     // Only run this IF the current props are not the same as previous props
-    if (this.props !== prevProps) {
+    if (this.props.address !== prevProps.address) {
       try {
+        let bal = this.props.address
+          ? await prov.getNativeBalance(this.props.address)
+          : "0"
         this.setState({
           icoRemaining: await prov.getICOremaining(this.props.address),
-          balance: await prov.getNativeBalance(this.props.address),
+          balance: bal,
+          DisplayingErrorMessagesSchema: Yup.object().shape({
+            amountToBuy: Yup.number("Not a number")
+              .required("Required")
+              .positive("You can't get negative tokens!")
+              .max(
+                Number(ethers.utils.formatEther(bal)) * this.state.icoRate,
+                "You don't have that much!"
+              ),
+          }),
         })
       } catch (e) {
         console.error(e)
