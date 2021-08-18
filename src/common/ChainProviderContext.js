@@ -14,4 +14,5 @@ export default React.createContext({
   defaultProvider: ChainProviderSettings.defaultProvider,
   provider: false,
   setProvider: () => {},
+  connected: false,
 })

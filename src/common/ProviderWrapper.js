@@ -5,7 +5,7 @@ import DeploymentABI from "../common/abi/Deployment.json"
 import ICOABI from "../common/abi/ICO.json"
 import InsultingABI from "../common/abi/Insulting.json"
 import chains from "eth-chains"
-import { getAddress } from "ethers/lib/utils"
+import { Web3Provider } from "@ethersproject/providers"
 
 export default class ProviderWrapper {
   constructor(provider, network) {
@@ -44,13 +44,7 @@ export default class ProviderWrapper {
   }
 
   canSendTransactions(provider = this.provider) {
-    if (provider.constructor.name == "Web3Provider") {
-      return true
-    } else if (provider.constructor.name == "JsonRpcProvider") {
-      return false
-    } else {
-      return false
-    }
+    return provider instanceof Web3Provider
   }
 
   async getContracts() {
