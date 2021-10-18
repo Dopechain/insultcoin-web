@@ -35,7 +35,7 @@ class Footer extends React.Component {
                 <span className="font-bold text-white uppercase mb-2">
                   <FaComments className="" /> Contact Us
                 </span>
-                <FooterLink href="mailto:cybertelxdev@gmail.com">
+                <FooterLink href="mailto:cybertelx@protonmail.com">
                   <FaEnvelope className="" /> Send Hate Mail{" "}
                   <FaAngry className="" />
                 </FooterLink>
